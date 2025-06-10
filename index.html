@@ -72,16 +72,24 @@
 
         // Main App Component
         const App = () => {
-            const [page, setPage] = React.useState('home');
-            const [isLoading, setIsLoading] = React.useState(false);
+    const [page, setPage] = React.useState('home');
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [loginError, setLoginError] = React.useState(''); // <-- Yeh nayi line add karein
 
-            const handleLogin = (e) => {
-                e.preventDefault();
-                setIsLoading(true);
-                setTimeout(() => {
-                    setIsLoading(false);
-                    setPage('dashboard');
-                }, 1500);
+    // Updated Login Handler
+    const handleLogin = (username, password) => {
+        setLoginError(''); // Purana error saaf karein
+        setIsLoading(true);
+
+        setTimeout(() => {
+            // Sahi username aur password check karein
+            if (username === 'prince.suthar' && password === 'Raj@prince.com') {
+                setPage('dashboard');
+            } else {
+                setLoginError('Invalid username or password. Please try again.');
+            }
+            setIsLoading(false);
+        }, 1500);
             };
             
             const handleLogout = () => {
@@ -96,7 +104,7 @@
             return (
                 <div>
                     {page === 'home' && <HomePage onNavigate={navigate} />}
-                    {page === 'login' && <LoginPage onLogin={handleLogin} isLoading={isLoading} />}
+                    {page === 'login' && <LoginPage onLogin={handleLogin} isLoading={isLoading} loginError={loginError} />}
                     {page === 'dashboard' && <DashboardPage onLogout={handleLogout} />}
                 </div>
             );
@@ -175,42 +183,71 @@
             );
         };
 
-        const LoginPage = ({ onLogin, isLoading }) => {
-            const [showPassword, setShowPassword] = React.useState(false);
-            return (
-                <div className="page min-h-screen flex items-center justify-center bg-slate-100 p-4">
-                    <div className="w-full max-w-sm mx-auto">
-                         <div className="flex justify-center mb-6">
-                            <Logo />
-                        </div>
-                        <div className="bg-white p-8 rounded-xl shadow-lg">
-                            <h2 className="text-2xl font-bold text-center text-slate-800">Employee Portal</h2>
-                            <p className="text-center text-slate-500 mt-2 text-sm">Access your personal dashboard.</p>
-                            <form className="mt-8 space-y-6" onSubmit={onLogin}>
-                                <div>
-                                    <label htmlFor="username" className="text-sm font-medium text-slate-700">Username</label>
-                                    <input id="username" name="username" type="text" required className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="prince.suthar" defaultValue="prince.suthar" />
-                                </div>
-                                <div className="relative">
-                                    <label htmlFor="password" className="text-sm font-medium text-slate-700">Password</label>
-                                    <input id="password" name="password" type={showPassword ? 'text' : 'password'} required className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="••••••••" defaultValue="password" />
-                                    <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center text-slate-500 hover:text-slate-700">
-                                        <Icon name={showPassword ? 'EyeOff' : 'Eye'} size={20} />
-                                    </button>
-                                </div>
-                                <div className="text-right text-sm">
-                                    <a href="#" className="font-medium text-blue-600 hover:text-blue-500">Forgot password?</a>
-                                </div>
-                                <button type="submit" disabled={isLoading} className="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400 flex items-center justify-center">
-                                    {isLoading ? ( <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div> ) : ( 'Login Securely' )}
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
+        const LoginPage = ({ onLogin, isLoading, loginError }) => {
+    const [showPassword, setShowPassword] = React.useState(false);
+    const [username, setUsername] = React.useState('prince.suthar');
+    const [password, setPassword] = React.useState('');
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onLogin(username, password);
+    };
+
+    return (
+        <div className="page min-h-screen flex items-center justify-center bg-slate-100 p-4">
+            <div className="w-full max-w-sm mx-auto">
+                 <div className="flex justify-center mb-6">
+                    <Logo />
+                </div>
+                <div className="bg-white p-8 rounded-xl shadow-lg">
+                    <h2 className="text-2xl font-bold text-center text-slate-800">Employee Portal</h2>
+                    <p className="text-center text-slate-500 mt-2 text-sm">Access your personal dashboard.</p>
+                    <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                        <div>
+                            <label htmlFor="username" className="text-sm font-medium text-slate-700">Username</label>
+                            <input 
+                                id="username" 
+                                name="username" 
+                                type="text" 
+                                required 
+                                className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" 
+                                placeholder="prince.suthar" 
+                                value={username} 
+                                onChange={e => setUsername(e.target.value)} 
+                            />
+                        </div>
+                        <div className="relative">
+                            <label htmlFor="password" className="text-sm font-medium text-slate-700">Password</label>
+                            <input 
+                                id="password" 
+                                name="password" 
+                                type={showPassword ? 'text' : 'password'} 
+                                required 
+                                className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" 
+                                placeholder="••••••••" 
+                                value={password} 
+                                onChange={e => setPassword(e.target.value)} 
+                            />
+                            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center text-slate-500 hover:text-slate-700">
+                                <Icon name={showPassword ? 'EyeOff' : 'Eye'} size={20} />
+                            </button>
+                        </div>
+
+                        {/* Error message dikhane ke liye yeh line add ki hai */}
+                        {loginError && <p className="text-red-500 text-sm text-center">{loginError}</p>}
+
+                        <div className="text-right text-sm">
+                            <a href="#" className="font-medium text-blue-600 hover:text-blue-500">Forgot password?</a>
+                        </div>
+                        <button type="submit" disabled={isLoading} className="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400 flex items-center justify-center">
+                            {isLoading ? ( <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div> ) : ( 'Login Securely' )}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    );
+};
         const DashboardPage = ({ onLogout }) => {
             const [activeView, setActiveView] = React.useState('dashboard');
             const [isSidebarOpen, setSidebarOpen] = React.useState(false);
@@ -273,7 +310,7 @@
             };
 
             const handleWithdrawal = (amount) => {
-                const newTransaction = { id: Date.now(), type: 'debit', description: 'Withdrawal to Bank', date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric'}), amount, status: 'Completed' };
+                const newTransaction = { id: Date.now(), type: 'debit', description: 'Withdrawal to Bank', date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric'}), amount, status: 'Processing' };
                 setUserDetails(prev => ({ ...prev, payments: { ...prev.payments, transactions: [newTransaction, ...prev.payments.transactions] } }));
             };
             
