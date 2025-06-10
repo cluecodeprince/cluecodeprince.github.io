@@ -72,21 +72,24 @@
 
         // Main App Component
         const App = () => {
-            const [page, setPage] = React.useState('home');
-            const [isLoading, setIsLoading] = React.useState(false);
-            const [loginError, setLoginError] = React.useState('');
+    const [page, setPage] = React.useState('home');
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [loginError, setLoginError] = React.useState(''); // <-- Yeh nayi line add karein
 
-            const handleLogin = (username, password) => {
-                setLoginError('');
-                setIsLoading(true);
-                setTimeout(() => {
-                    if (username === 'prince.suthar' && password === 'Raj@prince.com') {
-                        setPage('dashboard');
-                    } else {
-                        setLoginError('Invalid username or password. Please try again.');
-                    }
-                    setIsLoading(false);
-                }, 1500);
+    // Updated Login Handler
+    const handleLogin = (username, password) => {
+        setLoginError(''); // Purana error saaf karein
+        setIsLoading(true);
+
+        setTimeout(() => {
+            // Sahi username aur password check karein
+            if (username === 'prince.suthar' && password === 'Raj@prince.com') {
+                setPage('dashboard');
+            } else {
+                setLoginError('Invalid username or password. Please try again.');
+            }
+            setIsLoading(false);
+        }, 1500);
             };
             
             const handleLogout = () => {
@@ -181,51 +184,70 @@
         };
 
         const LoginPage = ({ onLogin, isLoading, loginError }) => {
-            const [showPassword, setShowPassword] = React.useState(false);
-            const [username, setUsername] = React.useState('prince.suthar');
-            const [password, setPassword] = React.useState('');
+    const [showPassword, setShowPassword] = React.useState(false);
+    const [username, setUsername] = React.useState('prince.suthar');
+    const [password, setPassword] = React.useState('');
 
-            const handleSubmit = (e) => {
-                e.preventDefault();
-                onLogin(username, password);
-            };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onLogin(username, password);
+    };
 
-            return (
-                <div className="page min-h-screen flex items-center justify-center bg-slate-100 p-4">
-                    <div className="w-full max-w-sm mx-auto">
-                         <div className="flex justify-center mb-6">
-                            <Logo />
-                        </div>
-                        <div className="bg-white p-8 rounded-xl shadow-lg">
-                            <h2 className="text-2xl font-bold text-center text-slate-800">Employee Portal</h2>
-                            <p className="text-center text-slate-500 mt-2 text-sm">Access your personal dashboard.</p>
-                            <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                                <div>
-                                    <label htmlFor="username" className="text-sm font-medium text-slate-700">Username</label>
-                                    <input id="username" name="username" type="text" required className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="prince.suthar" value={username} onChange={e => setUsername(e.target.value)} />
-                                </div>
-                                <div className="relative">
-                                    <label htmlFor="password" className="text-sm font-medium text-slate-700">Password</label>
-                                    <input id="password" name="password" type={showPassword ? 'text' : 'password'} required className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} />
-                                    <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center text-slate-500 hover:text-slate-700">
-                                        <Icon name={showPassword ? 'EyeOff' : 'Eye'} size={20} />
-                                    </button>
-                                </div>
-                                {loginError && <p className="text-red-500 text-sm text-center">{loginError}</p>}
-                                <div className="text-right text-sm">
-                                    <a href="#" className="font-medium text-blue-600 hover:text-blue-500">Forgot password?</a>
-                                </div>
-                                <button type="submit" disabled={isLoading} className="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400 flex items-center justify-center">
-                                    {isLoading ? ( <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div> ) : ( 'Login Securely' )}
-                                </button>
-                            </form>
-                        </div>
-                    </div>
+    return (
+        <div className="page min-h-screen flex items-center justify-center bg-slate-100 p-4">
+            <div className="w-full max-w-sm mx-auto">
+                 <div className="flex justify-center mb-6">
+                    <Logo />
                 </div>
-            );
-        };
-        
-        // --- MOBILE FIXES YAHAN HAIN ---
+                <div className="bg-white p-8 rounded-xl shadow-lg">
+                    <h2 className="text-2xl font-bold text-center text-slate-800">Employee Portal</h2>
+                    <p className="text-center text-slate-500 mt-2 text-sm">Access your personal dashboard.</p>
+                    <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                        <div>
+                            <label htmlFor="username" className="text-sm font-medium text-slate-700">Username</label>
+                            <input 
+                                id="username" 
+                                name="username" 
+                                type="text" 
+                                required 
+                                className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" 
+                                placeholder="prince.suthar" 
+                                value={username} 
+                                onChange={e => setUsername(e.target.value)} 
+                            />
+                        </div>
+                        <div className="relative">
+                            <label htmlFor="password" className="text-sm font-medium text-slate-700">Password</label>
+                            <input 
+                                id="password" 
+                                name="password" 
+                                type={showPassword ? 'text' : 'password'} 
+                                required 
+                                className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" 
+                                placeholder="••••••••" 
+                                value={password} 
+                                onChange={e => setPassword(e.target.value)} 
+                            />
+                            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center text-slate-500 hover:text-slate-700">
+                                <Icon name={showPassword ? 'EyeOff' : 'Eye'} size={20} />
+                            </button>
+                        </div>
+
+                        {/* Error message dikhane ke liye yeh line add ki hai */}
+                        {loginError && <p className="text-red-500 text-sm text-center">{loginError}</p>}
+
+                        <div className="text-right text-sm">
+                            <a href="#" className="font-medium text-blue-600 hover:text-blue-500">Forgot password?</a>
+                        </div>
+                        <button type="submit" disabled={isLoading} className="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400 flex items-center justify-center">
+                            {isLoading ? ( <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div> ) : ( 'Login Securely' )}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    );
+};
         const DashboardPage = ({ onLogout }) => {
             const [activeView, setActiveView] = React.useState('dashboard');
             const [isSidebarOpen, setSidebarOpen] = React.useState(false);
@@ -276,7 +298,14 @@
             const handleAdvanceApproval = (requestId, amount) => {
                 setUserDetails(prev => {
                     const newTransaction = { id: Date.now(), type: 'credit', description: `Advance Approved (ID: ${requestId})`, date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric'}), amount, status: 'Completed' };
-                    return { ...prev, payments: { ...prev.payments, transactions: [newTransaction, ...prev.payments.transactions], advanceRequests: prev.payments.advanceRequests.map(r => r.id === requestId ? { ...r, status: 'Approved' } : r) } };
+                    return {
+                        ...prev,
+                        payments: {
+                            ...prev.payments,
+                            transactions: [newTransaction, ...prev.payments.transactions],
+                            advanceRequests: prev.payments.advanceRequests.map(r => r.id === requestId ? { ...r, status: 'Approved' } : r)
+                        }
+                    };
                 });
             };
 
@@ -309,16 +338,16 @@
                         <div className="p-5 border-b"><Logo /></div>
                         <SidebarNav onLogout={onLogout} activeView={activeView} setActiveView={setActiveView} setSidebarOpen={setSidebarOpen} />
                     </aside>
-                    <div className="flex-1 flex flex-col min-w-0">
+                    <div className="flex-1 flex flex-col">
                         <header className="bg-white shadow-sm p-4 flex justify-between items-center">
                              <button onClick={() => setSidebarOpen(true)} className="md:hidden"> <Icon name="Menu" /> </button>
-                            <div className="font-semibold text-lg sm:text-xl hidden sm:block truncate">Welcome back, {userDetails.name.split(' ')[0]}!</div>
-                            <div className="flex items-center space-x-4 ml-auto">
+                            <div className="font-semibold text-xl hidden sm:block">Welcome back, {userDetails.name.split(' ')[0]}!</div>
+                            <div className="flex items-center space-x-4">
                                <div className="relative"> <Icon name="Bell" className="text-slate-500" /> <span className="absolute -top-1 -right-1 flex h-3 w-3"> <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span> <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span> </span> </div>
                                 <img src={userDetails.avatar} alt="User Avatar" className="w-10 h-10 rounded-full" />
                             </div>
                         </header>
-                        <main className="flex-1 p-4 sm:p-6">
+                        <main className="flex-1 p-4 sm:p-6 md:p-8">
                             {activeView === 'profile' ? <ProfileView user={userDetails} /> : <DashboardView user={userDetails} onManageFunds={() => setModal({isOpen: true, type: 'funds'})} onRequestAdvance={() => setModal({isOpen: true, type: 'advance'})} onProjectAction={handleProjectAction} onAdvanceAction={handleAdvanceApproval} />}
                         </main>
                     </div>
@@ -332,70 +361,63 @@
 
             const StatusPill = ({ color, text }) => {
                 const colors = { green: 'bg-green-100 text-green-800', amber: 'bg-amber-100 text-amber-800', gray: 'bg-slate-200 text-slate-800', blue: 'bg-blue-100 text-blue-800', red: 'bg-red-100 text-red-800' };
-                return <span className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${colors[color]}`}>{text}</span>;
+                return <span className={`px-3 py-1 text-xs font-medium rounded-full ${colors[color]}`}>{text}</span>;
             };
 
             const BalanceCard = ({ balance, onManageFunds }) => {
                 const isNegative = balance < 0;
                 return (
-                    <div className={`p-4 rounded-xl shadow-sm flex flex-col justify-between ${isNegative ? 'bg-red-50' : 'bg-green-50'}`}>
-                        <div> <p className={`text-sm font-semibold ${isNegative ? 'text-red-700' : 'text-green-700'}`}> {isNegative ? 'Dues Pending' : 'Overall Balance'} </p> <p className={`text-2xl sm:text-3xl font-bold mt-1 ${isNegative ? 'text-red-800' : 'text-green-800'}`}> ₹{Math.abs(balance).toLocaleString('en-IN')} </p> </div>
+                    <div className={`p-6 rounded-xl shadow-sm flex flex-col justify-between ${isNegative ? 'bg-red-50' : 'bg-green-50'}`}>
+                        <div> <p className={`text-sm font-semibold ${isNegative ? 'text-red-700' : 'text-green-700'}`}> {isNegative ? 'Dues Pending' : 'Overall Balance'} </p> <p className={`text-3xl font-bold mt-1 ${isNegative ? 'text-red-800' : 'text-green-800'}`}> ₹{Math.abs(balance).toLocaleString('en-IN')} </p> </div>
                         <button onClick={onManageFunds} className={`mt-4 w-full font-semibold py-2 px-4 rounded-lg transition-colors ${isNegative ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-green-600 hover:bg-green-700 text-white'}`}> {isNegative ? 'Settle Dues' : 'Manage Funds'} </button>
                     </div>
                 );
             };
 
             const ProjectActions = ({ project, onAction }) => {
-                const buttonClass = "text-xs px-3 py-1 rounded-md text-white transition-colors";
                 switch(project.status) {
-                    case 'New': return ( <div className="flex space-x-2 mt-2 sm:mt-0"> <button onClick={() => onAction(project.id, 'accept')} className={`${buttonClass} bg-green-500 hover:bg-green-600`}>Accept</button> <button onClick={() => onAction(project.id, 'decline')} className={`${buttonClass} bg-red-500 hover:bg-red-600`}>Decline</button> </div> );
-                    case 'In Progress': return ( <div className="flex space-x-2 mt-2 sm:mt-0"> <button onClick={() => onAction(project.id, 'pause')} className={`${buttonClass} bg-amber-500 hover:bg-amber-600`}>Pause</button> <button onClick={() => onAction(project.id, 'complete')} className={`${buttonClass} bg-blue-500 hover:bg-blue-600`}>Complete</button> </div> );
-                    case 'Paused': return ( <div className="flex space-x-2 mt-2 sm:mt-0"> <button onClick={() => onAction(project.id, 'resume')} className={`${buttonClass} bg-green-500 hover:bg-green-600`}>Resume</button> </div> );
+                    case 'New': return ( <div className="flex space-x-2"> <button onClick={() => onAction(project.id, 'accept')} className="text-xs bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600">Accept</button> <button onClick={() => onAction(project.id, 'decline')} className="text-xs bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600">Decline</button> </div> );
+                    case 'In Progress': return ( <div className="flex space-x-2"> <button onClick={() => onAction(project.id, 'pause')} className="text-xs bg-amber-500 text-white px-3 py-1 rounded-md hover:bg-amber-600">Pause</button> <button onClick={() => onAction(project.id, 'complete')} className="text-xs bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">Complete</button> </div> );
+                    case 'Paused': return ( <div className="flex space-x-2"> <button onClick={() => onAction(project.id, 'resume')} className="text-xs bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600">Resume</button> </div> );
                     default: return null;
                 }
             };
             
             return (
-            <div className="space-y-6">
+            <div className="space-y-8">
                 {/* Stat Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <BalanceCard balance={overallBalance} onManageFunds={onManageFunds}/>
-                     <div className="bg-white p-4 rounded-xl shadow-sm flex items-center space-x-4">
-                        <div className="bg-blue-100 p-3 rounded-full flex-shrink-0"><Icon name="Briefcase" size={24} className="text-blue-600"/></div>
-                        <div> <p className="text-slate-500 text-sm">Active Projects</p> <p className="text-xl sm:text-2xl font-bold">{user.workload.filter(p => p.status === 'In Progress').length}</p> </div>
+                    <div className="bg-white p-6 rounded-xl shadow-sm flex items-center space-x-4">
+                        <div className="bg-blue-100 p-3 rounded-full"><Icon name="Briefcase" size={24} className="text-blue-600"/></div>
+                        <div> <p className="text-slate-500 text-sm">Active Projects</p> <p className="text-2xl font-bold">{user.workload.filter(p => p.status === 'In Progress').length}</p> </div>
                     </div>
-                    <div className="bg-white p-4 rounded-xl shadow-sm flex flex-col justify-center text-center">
+                    <div className="bg-white p-6 rounded-xl shadow-sm flex flex-col justify-center text-center">
                         <p className="text-slate-500 text-sm font-semibold">New Project Invitations</p>
-                        <p className="text-2xl sm:text-3xl font-bold mt-1 text-blue-600">{newProjectsCount}</p>
+                        <p className="text-3xl font-bold mt-1 text-blue-600">{newProjectsCount}</p>
                         <p className="text-xs text-slate-400 mt-1">Review them below</p>
                     </div>
-                    <div className="bg-white p-4 rounded-xl shadow-sm flex flex-col justify-center items-center">
-                        <button onClick={onRequestAdvance} className="w-full h-full flex flex-col items-center justify-center bg-slate-50 hover:bg-blue-50 rounded-lg transition-colors py-4">
-                            <Icon name="PlusCircle" size={28} className="text-blue-600" />
-                            <p className="mt-2 font-semibold text-blue-700 text-sm sm:text-base">Request Advance</p>
+                    <div className="bg-white p-6 rounded-xl shadow-sm flex flex-col justify-center items-center">
+                        <button onClick={onRequestAdvance} className="w-full h-full flex flex-col items-center justify-center bg-slate-50 hover:bg-blue-50 rounded-lg transition-colors">
+                            <Icon name="PlusCircle" size={32} className="text-blue-600" />
+                            <p className="mt-2 font-semibold text-blue-700">Request Advance</p>
                         </button>
                     </div>
                 </div>
 
-                {/* Project Management */}
+                {/* Workload Section */}
                 <div>
-                    <h2 className="text-xl sm:text-2xl font-bold mb-4">Project Management</h2>
-                    <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm">
+                    <h2 className="text-2xl font-bold mb-4">Project Management</h2>
+                    <div className="bg-white p-6 rounded-xl shadow-sm">
                         <div className="space-y-4">
                         {user.workload.map((item) => (
                             <div key={item.id} className="border-b last:border-b-0 pb-4 last:pb-0">
-                                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-                                    <h3 className="font-semibold pr-4 mb-2 sm:mb-0 text-base sm:text-lg">{item.name}</h3>
-                                    <div className="flex flex-col sm:flex-row items-start sm:items-center w-full sm:w-auto">
-                                        <div className="mb-2 sm:mb-0 sm:mr-4"><StatusPill color={item.statusColor} text={item.status} /></div>
-                                        <ProjectActions project={item} onAction={onProjectAction} />
-                                    </div>
-                                </div>
+                                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2"> <h3 className="font-semibold pr-4 mb-2 sm:mb-0">{item.name}</h3> <div className="flex items-center space-x-4"> <StatusPill color={item.statusColor} text={item.status} /> <ProjectActions project={item} onAction={onProjectAction} /> </div> </div>
                                 {item.status !== 'New' && item.status !== 'Declined' && (
-                                <div className="mt-2">
-                                    <div className="flex justify-between items-center text-sm text-slate-500 mb-2"> <span>Due: {item.due}</span> <span>{item.progress}%</span> </div>
-                                    <div className="w-full bg-slate-200 rounded-full h-2.5"> <div className="bg-blue-600 h-2.5 rounded-full" style={{width: `${item.progress}%`}}></div> </div>
-                                </div>
+                                <>
+                                <div className="flex justify-between items-center text-sm text-slate-500 mb-2"> <span>Due: {item.due}</span> <span>{item.progress}%</span> </div>
+                                <div className="w-full bg-slate-200 rounded-full h-2.5"> <div className="bg-blue-600 h-2.5 rounded-full" style={{width: `${item.progress}%`}}></div> </div>
+                                </>
                                 )}
                             </div>
                         ))}
@@ -405,9 +427,9 @@
                 
                 {/* Advance Requests Section */}
                 {user.payments.advanceRequests.length > 0 && <div>
-                    <h2 className="text-xl sm:text-2xl font-bold mb-4">Advance Requests</h2>
+                    <h2 className="text-2xl font-bold mb-4">Advance Requests</h2>
                     <div className="bg-white rounded-xl shadow-sm overflow-x-auto">
-                        <table className="w-full text-left hidden md:table">
+                        <table className="w-full text-left">
                             <thead className="bg-slate-50 text-sm text-slate-600"> <tr> <th className="p-4 font-semibold">Date</th> <th className="p-4 font-semibold">Reason</th> <th className="p-4 font-semibold">Amount</th> <th className="p-4 font-semibold">Status</th> <th className="p-4 font-semibold">Action</th> </tr> </thead>
                             <tbody className="divide-y divide-slate-200">
                                 {user.payments.advanceRequests.map(r => (
@@ -421,28 +443,13 @@
                                 ))}
                             </tbody>
                         </table>
-                        <div className="space-y-3 md:hidden">
-                            {user.payments.advanceRequests.map(r => (
-                                <div key={r.id} className="bg-slate-50 p-4 rounded-lg">
-                                    <div className="flex justify-between items-start">
-                                        <p className="font-medium">{r.reason}</p>
-                                        <p className="font-semibold">₹{r.amount.toLocaleString('en-IN')}</p>
-                                    </div>
-                                    <div className="flex justify-between items-center mt-2 text-sm">
-                                        <span className="text-slate-500">{r.date}</span>
-                                        <StatusPill color={r.status === 'Approved' ? 'green' : 'amber'} text={r.status}/>
-                                    </div>
-                                    {r.status === 'Pending' && <button onClick={() => onAdvanceAction(r.id, r.amount)} className="mt-2 w-full text-xs bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600">Approve (Demo)</button>}
-                                </div>
-                            ))}
-                        </div>
                     </div>
                 </div>}
 
                 {/* Transaction History Section */}
                 <div>
-                    <h2 className="text-xl sm:text-2xl font-bold mb-4">Transaction History</h2>
-                    <div className="bg-white rounded-xl shadow-sm overflow-hidden hidden md:block">
+                    <h2 className="text-2xl font-bold mb-4">Transaction History</h2>
+                    <div className="bg-white rounded-xl shadow-sm overflow-x-auto">
                         <table className="w-full text-left">
                             <thead className="bg-slate-50 text-sm text-slate-600"> <tr> <th className="p-4 font-semibold">Description</th> <th className="p-4 font-semibold">Date</th> <th className="p-4 font-semibold">Status</th> <th className="p-4 font-semibold text-right">Amount (₹)</th> </tr> </thead>
                             <tbody className="divide-y divide-slate-200">
@@ -451,50 +458,33 @@
                                         <td className="p-4 font-medium">{t.description}</td>
                                         <td className="p-4 text-slate-600">{t.date}</td>
                                         <td className="p-4"><StatusPill color={t.status === 'Completed' ? 'green' : t.status === 'Processing' ? 'amber' : 'gray'} text={t.status}/></td>
-                                        <td className={`p-4 font-bold text-right ${t.type === 'credit' ? 'text-green-600' : 'text-red-600'}`}> {t.type === 'credit' ? '+' : '-'}₹{t.amount.toLocaleString('en-IN')} </td>
+                                        <td className={`p-4 font-bold text-right ${t.type === 'credit' ? 'text-green-600' : 'text-red-600'}`}> {t.type === 'credit' ? '+' : '-'} {t.amount.toLocaleString('en-IN')} </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
-                    </div>
-                    <div className="space-y-3 md:hidden">
-                        {user.payments.transactions.map(t => (
-                            <div key={t.id} className="bg-white p-4 rounded-xl shadow-sm flex justify-between items-center">
-                                <div>
-                                    <p className="font-medium">{t.description}</p>
-                                    <p className="text-sm text-slate-500">{t.date} &bull; <StatusPill color={t.status === 'Completed' ? 'green' : t.status === 'Processing' ? 'amber' : 'gray'} text={t.status}/></p>
-                                </div>
-                                <p className={`font-bold text-lg ${t.type === 'credit' ? 'text-green-600' : 'text-red-600'}`}>
-                                    {t.type === 'credit' ? '+' : '-'}₹{t.amount.toLocaleString('en-IN')}
-                                </p>
-                            </div>
-                        ))}
                     </div>
                 </div>
             </div>
         )};
 
         const ProfileView = ({ user }) => (
-            <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl shadow-sm">
-                <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-8 border-b pb-6 mb-6">
-                    <img src={user.avatar} alt="Profile" className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover ring-4 ring-blue-100" />
+            <div className="bg-white p-6 md:p-8 rounded-xl shadow-sm">
+                <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8 border-b pb-8 mb-8">
+                    <img src={user.avatar} alt="Profile" className="w-32 h-32 rounded-full object-cover ring-4 ring-blue-100" />
                     <div className="text-center md:text-left flex-1">
-                        <h1 className="text-2xl md:text-3xl font-bold">{user.name}</h1>
-                        <p className="text-blue-600 font-semibold text-base md:text-lg">{user.role}</p>
-                        <div className="mt-4 flex flex-col sm:flex-row flex-wrap justify-center md:justify-start gap-x-6 gap-y-2 text-slate-600 text-sm">
-                            <span className="flex items-center justify-center"><Icon name="Mail" size={16} className="mr-2 flex-shrink-0"/> {user.email}</span>
-                            <span className="flex items-center justify-center"><Icon name="Phone" size={16} className="mr-2 flex-shrink-0"/> {user.phone}</span>
-                            <span className="flex items-center justify-center"><Icon name="Badge" size={16} className="mr-2 flex-shrink-0"/> ID: {user.employeeId}</span>
+                        <h1 className="text-3xl font-bold">{user.name}</h1> <p className="text-blue-600 font-semibold text-lg">{user.role}</p>
+                        <div className="mt-4 flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2 text-slate-600">
+                            <span className="flex items-center"><Icon name="Mail" size={16} className="mr-2"/> {user.email}</span>
+                            <span className="flex items-center"><Icon name="Phone" size={16} className="mr-2"/> {user.phone}</span>
+                            <span className="flex items-center"><Icon name="Badge" size={16} className="mr-2"/> ID: {user.employeeId}</span>
                         </div>
                     </div>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div className="lg:col-span-2">
-                        <h2 className="text-xl sm:text-2xl font-bold mb-4">About Me</h2>
-                        <p className="text-slate-600 leading-relaxed">{user.about}</p>
-                    </div>
+                    <div className="lg:col-span-2"> <h2 className="text-2xl font-bold mb-4">About Me</h2> <p className="text-slate-600 leading-relaxed">{user.about}</p> </div>
                     <div>
-                        <h2 className="text-xl sm:text-2xl font-bold mb-4">Core Skills</h2>
+                        <h2 className="text-2xl font-bold mb-4">Core Skills</h2>
                         <div className="space-y-4">
                         {user.skills.map(skill => (
                             <div key={skill.name}>
@@ -560,9 +550,3 @@
 
 </body>
 </html>
-```
-
----
-Ab aap apne purane code ko is code se poori tarah replace kar dein, aur fir GitHub par file update karein.
-
-**Bahut Zaroori:** GitHub par file update karne ke baad, browser mein **Hard Refresh** (`Cmd + Shift + R`) zaroor karein taaki aapko purani file na dik
